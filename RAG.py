@@ -26,9 +26,9 @@ if 'rag' not in st.session_state:
     st.session_state.rag = False
 
 connection_parameters = {
-    "account": credentials.account,
-    "user": credentials.user,
-    "password": credentials.password
+    "account": "wob36269",
+    "user": "ANANYAHN",
+    "password": "Qwerty1!"
 }
 
 COLUMNS = ["chunk", "relative_path", "test_output"]
