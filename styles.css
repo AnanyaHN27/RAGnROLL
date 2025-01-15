@@ -1,0 +1,61 @@
+/* Global Styles */
+[data-testid="stAppViewContainer"] {
+    background-color: #f3f7f0;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
+    color: #2c4a3e;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+/* Title Styling */
+.title-container {
+    background: #2c4a3e;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(44, 74, 62, 0.1);
+}
+
+.title-container h1 {
+    color: white;
+    font-size: 2.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.title-container p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    line-height: 1.6;
+}
+
+/* Input Field Styling */
+.stTextInput > div > div > input {
+    background-color: white;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #c5d5c5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(44, 74, 62, 0.05);
+}
+
+/* Footer Styling */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid #c5d5c5;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #2c4a3e;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
