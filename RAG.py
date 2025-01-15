@@ -19,6 +19,11 @@ SNOWFLAKE_CONFIG = {
     "COLUMNS": ["chunk", "relative_path", "test_output"]
 }
 
+st.set_page_config(
+    page_title="Environmental Analysis",
+    page_icon="🌍"
+)
+
 # Initialize session state
 if 'country_value' not in st.session_state:
     st.session_state.country_value = "ALL"
@@ -66,8 +71,8 @@ def config_options():
     state_names = ["Alaska", "Alabama", "Arkansas", "American Samoa", "Arizona", "California", "Colorado", "Connecticut", "District ", "of Columbia", "Delaware", "Florida", "Georgia", "Guam", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", "North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Virgin Islands", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"]
 
     cat_list = ["ALL"] + state_names
-    st.selectbox("Select Region", cat_list, key="state_value")
-    #st.session_state.rag = st.sidebar.checkbox("Use document context", value=True)
+    st.sidebar.selectbox("Select US State", cat_list, key="state_value")
+    st.session_state.rag = st.sidebar.checkbox("Use document context", value=True)
 
 def get_similar_chunks_search_service(query):
     """Get relevant chunks from the search service."""
@@ -77,40 +82,40 @@ def get_similar_chunks_search_service(query):
 
     filter_obj = {"@and": filters} if filters else None
     response = svc.search(query, COLUMNS, filter=filter_obj, limit=NUM_CHUNKS) if filter_obj else svc.search(query, COLUMNS, limit=NUM_CHUNKS)
-    #st.sidebar.json(response.json())
+    # st.sidebar.json(response.json())
     return response.json()
 
 def create_environmental_prompt(query_type):
     """Create specialized prompts based on query type."""
     prompts = {
         "emissions": """
-            Focus on emissions analysis and reduction:
-            - Current emission levels and sources
-            - Reduction strategies and initiatives
-            - Policy recommendations
-            - Implementation challenges
-        """,
+    Focus on emissions analysis and reduction:
+    - Current emission levels and sources
+    - Reduction strategies and initiatives
+    - Policy recommendations
+    - Implementation challenges
+    """,
         "climate_impact": """
-            Analyze climate change impacts:
-            - Current and projected effects
-            - Vulnerable areas and populations
-            - Adaptation strategies
-            - Mitigation measures
-        """,
+    Analyze climate change impacts:
+    - Current and projected effects
+    - Vulnerable areas and populations
+    - Adaptation strategies
+    - Mitigation measures
+    """,
         "biodiversity": """
-            Evaluate biodiversity considerations:
-            - Species diversity and distribution
-            - Habitat preservation
-            - Conservation strategies
-            - Environmental pressures
-        """,
+    Evaluate biodiversity considerations:
+    - Species diversity and distribution
+    - Habitat preservation
+    - Conservation strategies
+    - Environmental pressures
+    """,
         "default": """
-            Provide comprehensive environmental analysis:
-            - Current environmental conditions
-            - Key challenges and opportunities
-            - Action recommendations
-            - Supporting data
-        """
+    Provide comprehensive environmental analysis:
+    - Current environmental conditions
+    - Key challenges and opportunities
+    - Action recommendations
+    - Supporting data
+    """
     }
     return prompts.get(query_type, prompts["default"])
 
@@ -133,60 +138,60 @@ def create_prompt(myquestion):
     specialized_prompt = create_environmental_prompt(query_type)
     
     base_prompt = f"""
-        You are an environmental and climate science expert with comprehensive knowledge of climate change, environmental policy, and sustainability solutions.
+You are an environmental and climate science expert with comprehensive knowledge of climate change, environmental policy, and sustainability solutions.
 
-        {specialized_prompt}
+{specialized_prompt}
 
-        Core Focus Areas:
-        - Climate change impact assessment
-        - Emissions reduction strategies
-        - Environmental policy analysis
-        - Biodiversity conservation
-        - Sustainability implementation
+Core Focus Areas:
+- Climate change impact assessment
+- Emissions reduction strategies
+- Environmental policy analysis
+- Biodiversity conservation
+- Sustainability implementation
 
-        Analysis Framework:
+Analysis Framework:
 
-        1. Current Status
-        - Environmental conditions
-        - Key indicators and metrics
-        - Regional specific factors
-        - Recent trends
+1. Current Status
+- Environmental conditions
+- Key indicators and metrics
+- Regional specific factors
+- Recent trends
 
-        2. Impact Assessment
-        - Environmental effects
-        - Social implications
-        - Economic considerations
-        - Health impacts
+2. Impact Assessment
+- Environmental effects
+- Social implications
+- Economic considerations
+- Health impacts
 
-        3. Strategic Solutions
-        - Policy recommendations
-        - Technical solutions
-        - Implementation strategies
-        - Stakeholder engagement
+3. Strategic Solutions
+- Policy recommendations
+- Technical solutions
+- Implementation strategies
+- Stakeholder engagement
 
-        4. Action Plan
-        - Immediate steps
-        - Long-term strategy
-        - Resource requirements
-        - Monitoring metrics
+4. Action Plan
+- Immediate steps
+- Long-term strategy
+- Resource requirements
+- Monitoring metrics
 
-        Guidelines:
-        - Provide region-specific insights
-        - Use evidence-based analysis
-        - Include actionable recommendations
-        - Consider multiple stakeholder perspectives
-        - Acknowledge data limitations
+Guidelines:
+- Provide region-specific insights
+- Use evidence-based analysis
+- Include actionable recommendations
+- Consider multiple stakeholder perspectives
+- Acknowledge data limitations
 
-        Current Region Focus: {st.session_state.state_value}
+Current Region Focus: {st.session_state.state_value}
 
-        CONTEXT:
-        {prompt_context}
+CONTEXT:
+{prompt_context}
 
-        QUESTION:
-        {myquestion}
+QUESTION:
+{myquestion}
 
-        Provide a structured analysis following the framework above:
-    """
+Provide a structured analysis following the framework above:
+"""
     return base_prompt
 
 def complete(myquestion):
@@ -200,16 +205,52 @@ def complete(myquestion):
 
 def main():
     """Main application function."""
+
+    st.markdown("""
+    <style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+    }
+    .title {
+        color: #2d3e50;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    .footer {
+        font-size: 0.9rem;
+        text-align: center;
+        padding: 1rem;
+        color: #555;
+        background-color: #f1f1f1;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+    .header {
+        color: #4f78ff;
+        font-size: 1.5rem;
+        margin-top: 1rem;
+    }
+    .card {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.title("US Environmental Analysis & Recommendations")
     st.markdown("""
     Get detailed environmental analysis, climate impact assessments, and sustainability recommendations.
-    Select a region and enter your query below.
+    Select a state and enter your query below.
     """)
 
-    # Configure sidebar
     config_options()
 
-    # Query input
     question = st.text_input(
         "Enter your question",
         placeholder="What are the main environmental challenges and potential solutions in this region?"
@@ -220,6 +261,25 @@ def main():
         st.header("Analysis & Recommendations")
 
         st.markdown(response)
+    
+    st.markdown("""
+    <style>
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+            color: var(--text-color);
+            background-color: var(--primary-bg-color);
+        }
+    </style>
+    <div class="footer">
+        Made with ❤️ by Ananya Hari Narain for RAG 'n' ROLL Amp up Search with Snowflake & Mistral
+    </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
