@@ -71,8 +71,8 @@ def config_options():
     state_names = ["Alaska", "Alabama", "Arkansas", "American Samoa", "Arizona", "California", "Colorado", "Connecticut", "District ", "of Columbia", "Delaware", "Florida", "Georgia", "Guam", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", "North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Virgin Islands", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"]
 
     cat_list = ["ALL"] + state_names
-    st.sidebar.selectbox("Select US State", cat_list, key="state_value")
-    st.session_state.rag = st.sidebar.checkbox("Use document context", value=True)
+    st.selectbox("Select US State", cat_list, key="state_value")
+    st.session_state.rag = True #st.sidebar.checkbox("Use document context", value=True)
 
 def get_similar_chunks_search_service(query):
     """Get relevant chunks from the search service."""
@@ -205,49 +205,81 @@ def complete(myquestion):
 
 def main():
     """Main application function."""
-
+    
     st.markdown("""
     <style>
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #f7f7f7;
-        color: #333;
+    /* Global Styles */
+    [data-testid="stAppViewContainer"] {
+        background-color: #f3f7f0;
     }
-    .title {
-        color: #2d3e50;
+    
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Inter', -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
+        color: #2c4a3e;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+    }
+    
+    /* Title Styling */
+    .title-container {
+        background: #2c4a3e;
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(44, 74, 62, 0.1);
+    }
+    
+    .title-container h1 {
+        color: white;
         font-size: 2.5rem;
-        margin-bottom: 1rem;
+        margin: 0;
+        padding: 0;
     }
-    .footer {
-        font-size: 0.9rem;
-        text-align: center;
+    
+    .title-container p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        margin-top: 1rem;
+        line-height: 1.6;
+    }
+    
+    /* Input Field Styling */
+    .stTextInput > div > div > input {
+        background-color: white;
         padding: 1rem;
-        color: #555;
-        background-color: #f1f1f1;
+        font-size: 1rem;
+        border: 1px solid #c5d5c5;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(44, 74, 62, 0.05);
+    }
+    
+    /* Footer Styling */
+    .footer {
         position: fixed;
         bottom: 0;
-        width: 100%;
-    }
-    .header {
-        color: #4f78ff;
-        font-size: 1.5rem;
-        margin-top: 1rem;
-    }
-    .card {
-        background-color: #ffffff;
-        padding: 2rem;
-        border-radius: 8px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 2rem;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-top: 1px solid #c5d5c5;
+        text-align: center;
+        font-size: 0.875rem;
+        color: #2c4a3e;
+        z-index: 1000;
+        backdrop-filter: blur(5px);
     }
     </style>
     """, unsafe_allow_html=True)
 
-    st.title("US Environmental Analysis & Recommendations")
+    # Title Section
     st.markdown("""
-    Get detailed environmental analysis, climate impact assessments, and sustainability recommendations.
-    Select a state and enter your query below.
-    """)
+    <div class="title-container">
+        <h1>US Environmental Analysis & Recommendations</h1>
+        <p>Get detailed environmental analysis, climate impact assessments, and sustainability recommendations.
+        Select a state and enter your query below.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
     config_options()
 
@@ -256,28 +288,19 @@ def main():
         placeholder="What are the main environmental challenges and potential solutions in this region?"
     )
 
+    # Create a placeholder
+    placeholder = st.empty()
+
+    # Only populate the placeholder if there's a response
     if question:
         response = complete(question)
-        st.header("Analysis & Recommendations")
-
-        st.markdown(response)
+        with placeholder.container():
+            st.header("🌿 Analysis & Recommendations")
+            st.markdown(response)
     
     st.markdown("""
-    <style>
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 10px;
-            font-size: 14px;
-            text-align: center;
-            color: var(--text-color);
-            background-color: var(--primary-bg-color);
-        }
-    </style>
     <div class="footer">
-        Made with ❤️ by Ananya Hari Narain for RAG 'n' ROLL Amp up Search with Snowflake & Mistral
+        Made with 🌱 by Ananya Hari Narain for RAG 'n' ROLL Amp up Search with Snowflake & Mistral
     </div>
     """, unsafe_allow_html=True)
 
