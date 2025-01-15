@@ -5,6 +5,8 @@ This application is a submission for the "RAG 'n' ROLL: Amp up Search with Snowf
 
 ## Access
 Explore the app here: [RAG 'n' ROLL Dashboard](https://ananya-rag-n-roll.streamlit.app/)
+![Screenshot 2025-01-15 at 5 39 35 AM](https://github.com/user-attachments/assets/94a8f35b-789d-41bf-a28f-e1dcc36e5703)
+
 
 ## Features
 - **RAG-Powered Search**: Combines data retrieval and language generation for accurate responses.
