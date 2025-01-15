@@ -2,7 +2,7 @@ import streamlit as st
 from snowflake.snowpark import Session
 from snowflake.core import Root
 import pandas as pd
-import credentials
+# import credentials
 
 pd.set_option("max_colwidth", None)
 
